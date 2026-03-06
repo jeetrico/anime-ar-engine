@@ -15,7 +15,8 @@ No installation.
 Just open the page and **activate your chakra.**
 
 ---
-
+## 📺 Live Jutsu Demo
+**[👉 CLICK HERE TO ACTIVATE YOUR CHAKRA](https://jeetrico.github.io/anime-ar-engine/)** *(Requires Camera Access. Works best on mobile devices like iPhone 17/Android High-End)*
 # 🎥 Live Demo
 
 👉 **Activate the engine**
