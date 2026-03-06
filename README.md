@@ -16,6 +16,14 @@ Just open the page and **activate your chakra**.
 
 ---
 
+# 🎥 Demo Video
+
+▶ **Watch the Demo**
+
+https://github.com/jeetrico/anime-ar-engine/blob/main/demo.mp4
+
+---
+
 # 🎬 Demo Screenshots
 
 ### 🌪️ Rasen Shuriken Activation
@@ -23,16 +31,6 @@ Just open the page and **activate your chakra**.
 
 ### ⚡ Chidori / Raikiri Activation
 <img src="https://github.com/user-attachments/assets/c300d87d-cd59-4ff4-98b7-8c2563345473" width="100%">
-
----
-
-# 🎥 Video Demo
-
-▶ Watch the demo video
-
-https://youtube.com/your-video-link
-
-*(Replace this with your real demo video link)*
 
 ---
 
@@ -161,6 +159,8 @@ anime-ar-engine
 │
 ├── index.html
 │   └── Core AR engine
+│
+├── demo.mp4
 │
 ├── assets
 │   ├── jeet_left_aura.mp4
