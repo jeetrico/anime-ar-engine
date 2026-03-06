@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jeet AR - Hovering Jutsu Engine Original Quality</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+
+  <style>
+    body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Courier New', Courier, monospace; }
+    #v_src, #out {
+      position: absolute; top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      object-fit: cover; transform: scaleX(-1);
+    }
+    #out { z-index: 2; pointer-events: none; }
+    
+    /* Removed .darkness overlay to keep original camera colors */
+
+    .fx {
+      position: absolute; top: 0; left: 0;
+      width: 1000px; 
+      transform: translate(-50%, -50%) scale(1);
+      pointer-events: none; display: none;
+      mix-blend-mode: screen; z-index: 20;
+    }
+    
+    #combat_log {
+      position: absolute; top: 30px; left: 30px; z-index: 50;
+      background: rgba(5, 0, 15, 0.7); border: 1px solid rgba(255, 255, 255, 0.2);
+      border-left: 6px solid #8a2be2; padding: 15px 25px; border-radius: 0px 8px 8px 0px;
+      backdrop-filter: blur(4px); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .log-title { font-size: 16px; color: #ffffff; opacity: 0.7; margin-bottom: 5px; letter-spacing: 2px; }
+    .log-msg { font-size: 22px; font-weight: 900; color: #e024ff; text-shadow: 0 0 10px #e024ff; transition: all 0.3s ease; letter-spacing: 1px; }
+
+    #combat_log.state-chidori { border-left: 6px solid #b824ff; box-shadow: 0 0 20px rgba(184, 36, 255, 0.4); }
+    #combat_log.state-rasengan { border-left: 6px solid #ff8800; box-shadow: 0 0 20px rgba(255, 136, 0, 0.4); }
+    #combat_log.state-clash { border-left: 6px solid #ff1100; animation: shake 0.5s infinite; }
+
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) scale(1.1); }
+      50% { transform: translate(-1px, -1px) scale(1.1); }
+      100% { transform: translate(1px, -1px) scale(1.1); }
+    }
+  </style>
+</head>
+<body>
+
+  <video id="v_src" autoplay playsinline></video>
+  <canvas id="out"></canvas>
+
+  <div id="combat_log" class="state-idle">
+    <div class="log-title">JEET BANERJEE AR SYSTEM</div>
+    <div id="log_message" class="log-msg">// ANIME MODE STANDBY</div>
+  </div>
+
+  <video id="vid_rasengan" class="fx" src="assets/jeet_left_aura.mp4" muted autoplay playsinline></video>
+  <video id="vid_chidori" class="fx" src="assets/jeet_right_aura.mp4" muted autoplay playsinline></video>
+
+  <script>
+    const vElement = document.getElementById('v_src');
+    const cElement = document.getElementById('out');
+    const ctx = cElement.getContext('2d');
+    
+    const vidRasengan = document.getElementById('vid_rasengan');
+    const vidChidori = document.getElementById('vid_chidori');
+    const combatLog = document.getElementById('combat_log');
+    const logMessage = document.getElementById('log_message');
+
+    let wasOpen = [false, false]; 
+    let jutsuScale = [1.0, 1.0]; 
+    let timeApp = 0; 
+
+    // --- LOOP POINTS ---
+    const RASENGAN_LOOP_POINT = 3.4;
+    const CHIDORI_LOOP_POINT = 0; 
+
+    vidRasengan.addEventListener('ended', () => {
+        vidRasengan.currentTime = RASENGAN_LOOP_POINT;
+        vidRasengan.play();
+    });
+
+    vidChidori.addEventListener('ended', () => {
+        vidChidori.currentTime = CHIDORI_LOOP_POINT;
+        vidChidori.play();
+    });
+
+    function checkOpen(pts) {
+        let count = 0;
+        const wrist = pts[0];
+        const tips = [8, 12, 16, 20], pips = [6, 10, 14, 18];
+        for (let i = 0; i < tips.length; i++) {
+            if (Math.hypot(pts[tips[i]].x - wrist.x, pts[tips[i]].y - wrist.y) > 
+                Math.hypot(pts[pips[i]].x - wrist.x, pts[pips[i]].y - wrist.y)) count++;
+        }
+        return count >= 3;
+    }
+
+    function onResults(res) {
+        cElement.width = vElement.videoWidth;
+        cElement.height = vElement.videoHeight;
+        
+        ctx.save();
+        
+        // NO FILTERS APPLIED HERE - RAW CAMERA FEED
+        ctx.clearRect(0, 0, cElement.width, cElement.height);
+        ctx.drawImage(res.image, 0, 0, cElement.width, cElement.height);
+        
+        timeApp += 0.05; 
+        let showChidori = false, showRasengan = false;
+        
+        vidRasengan.style.display = 'none';
+        vidChidori.style.display = 'none';
+
+        if (res.multiHandLandmarks && res.multiHandedness) {
+            res.multiHandLandmarks.forEach((pts, i) => {
+                const label = res.multiHandedness[i].label;
+                const isPhysicalRight = label === 'Left'; 
+                const idx = isPhysicalRight ? 1 : 0;
+                const open = checkOpen(pts);
+
+                let skelColor = open ? (isPhysicalRight ? '#ff8800' : '#b824ff') : 'rgba(255, 255, 255, 0.2)';
+                let skelShadow = open ? (isPhysicalRight ? '#ffaa00' : '#e024ff') : 'transparent';
+
+                ctx.save();
+                ctx.shadowBlur = open ? 15 : 0; 
+                ctx.shadowColor = skelShadow; 
+                drawConnectors(ctx, pts, HAND_CONNECTIONS, {color: skelColor, lineWidth: open ? 4 : 2});
+                drawLandmarks(ctx, pts, {color: '#ffffff', lineWidth: 1, radius: open ? 3 : 2});
+                ctx.restore();
+
+                const wrist = pts[0], knk = pts[9];
+                const tx = (wrist.x + knk.x) / 2, ty = (wrist.y + knk.y) / 2;
+
+                if (open) {
+                    if (isPhysicalRight) {
+                        if (!wasOpen[idx]) {
+                            jutsuScale[idx] = 0.8;
+                            vidRasengan.currentTime = 0; 
+                            vidRasengan.play();
+                        }
+                        jutsuScale[idx] = Math.min(2.5, jutsuScale[idx] + 0.015); 
+                        vidRasengan.style.transform = `translate(-50%, -50%) scale(${jutsuScale[idx]})`;
+                        vidRasengan.style.left = `${(1 - tx) * window.innerWidth}px`;
+                        vidRasengan.style.top = `${(ty * window.innerHeight) - 220}px`; 
+                        vidRasengan.style.display = 'block'; 
+                        showRasengan = true;
+                    } else {
+                        if (!wasOpen[idx]) {
+                            jutsuScale[idx] = 0.8;
+                            vidChidori.currentTime = 0; 
+                            vidChidori.play();
+                        }
+                        jutsuScale[idx] = Math.min(2.5, jutsuScale[idx] + 0.015); 
+                        vidChidori.style.transform = `translate(-50%, -50%) scale(${jutsuScale[idx]})`;
+                        vidChidori.style.left = `${(1 - tx) * window.innerWidth}px`;
+                        vidChidori.style.top = `${ty * window.innerHeight}px`; 
+                        vidChidori.style.display = 'block'; 
+                        showChidori = true;
+                    }
+                }
+                wasOpen[idx] = open;
+            });
+        }
+
+        if (showChidori && showRasengan) {
+            combatLog.className = 'state-clash';
+            logMessage.innerText = "⚠️ JUTSU CLASH DETECTED ⚠️";
+        } else if (showChidori) {
+            combatLog.className = 'state-chidori';
+            logMessage.innerText = "⚡ ACTIVATING CHIDORI ⚡";
+        } else if (showRasengan) {
+            combatLog.className = 'state-rasengan';
+            logMessage.innerText = "🌪️ ACTIVATING RASEN SHURIKEN 🌪️";
+        } else {
+            combatLog.className = 'state-idle';
+            logMessage.innerText = "// ANIME MODE STANDBY";
+        }
+
+        ctx.restore();
+    }
+
+    const h = new Hands({ locateFile: (f) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${f}` });
+    h.setOptions({ maxNumHands: 2, modelComplexity: 1, minDetectionConfidence: 0.85, minTrackingConfidence: 0.85 });
+    h.onResults(onResults);
+
+    const cam = new Camera(vElement, { onFrame: async () => { await h.send({ image: vElement }); }, width: 1280, height: 720 });
+    cam.start();
+  </script>
+</body>
+</html>
