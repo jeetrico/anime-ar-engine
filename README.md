@@ -8,23 +8,40 @@
 
 > **"A shinobi’s life is not measured by how they lived, but rather what they managed to accomplish."**
 
-JEETRICO Anime AR Engine is a **browser-based Augmented Reality system** that allows you to summon iconic anime chakra techniques using **real-time hand tracking and computer vision**.
+JEETRICO Anime AR Engine is a **browser-based Augmented Reality system** that lets you summon anime chakra powers using **real-time hand tracking and computer vision**.
 
 No apps.  
 No installation.  
-Just open the page and **activate your chakra.**
+Just open the page and **activate your chakra**.
 
 ---
-## 📺 Live Jutsu Demo
-**[👉 CLICK HERE TO ACTIVATE YOUR CHAKRA](https://jeetrico.github.io/anime-ar-engine/)**
 
-⚠️ Camera permission required.
+# 🎬 Demo Screenshots
 
-Works best on:
+### 🌪️ Rasen Shuriken Activation
+<img src="https://github.com/user-attachments/assets/abf102a1-5604-4357-9d56-05de66e4a31d" width="100%">
 
-• iPhone  
-• Android flagship devices  
-• Chrome / Safari browsers  
+### ⚡ Chidori / Raikiri Activation
+<img src="https://github.com/user-attachments/assets/c300d87d-cd59-4ff4-98b7-8c2563345473" width="100%">
+
+---
+
+# 🎥 Video Demo
+
+▶ Watch the demo video
+
+https://youtube.com/your-video-link
+
+*(Replace this with your real demo video link)*
+
+---
+
+# 📺 Live Jutsu Demo
+
+👉 **[CLICK HERE TO ACTIVATE YOUR CHAKRA](https://jeetrico.github.io/anime-ar-engine/)**  
+
+⚠️ Requires camera access  
+📱 Works best on modern mobile devices
 
 ---
 
@@ -55,7 +72,7 @@ Features:
 • Dynamic chakra expansion  
 • Anchored slightly above the palm  
 
-Energy growth logic:
+Example logic:
 
 ```javascript
 if(handOpen){
@@ -63,13 +80,13 @@ if(handOpen){
 }
 ```
 
-The longer you hold the palm open, the **larger the Rasengan grows**.
+The longer you hold the palm open, the **bigger the Rasengan becomes**.
 
 ---
 
 ## ⚡ Chidori / Raikiri (Left Hand)
 
-Opening your **left palm** activates high-voltage lightning chakra.
+Opening your **left palm** activates lightning chakra.
 
 Features:
 
@@ -86,13 +103,13 @@ Inspired by the legendary **Raikiri technique**.
 
 When **both hands activate simultaneously**, the engine detects a chakra clash.
 
-HUD Warning:
+HUD warning:
 
 ```
 ⚠️ JUTSU CLASH DETECTED ⚠️
 ```
 
-Future versions will trigger:
+Future upgrades may include:
 
 💥 Chakra explosion  
 ⚡ Lightning discharge  
@@ -113,21 +130,21 @@ if (!wasOpen[idx]) {
 }
 ```
 
-Key components:
+Core components:
 
 | Component | Role |
-|----------|------|
+|-----------|------|
 MediaPipe Hands | Hand landmark detection |
 Gesture Logic | Detect open / closed palm |
 Video VFX | Chakra animations |
-Canvas Renderer | Skeleton tracking overlay |
+Canvas Renderer | Skeleton tracking |
 
 ---
 
 # 🛠️ Technology Stack
 
 | Technology | Purpose |
-|------------|---------|
+|------------|--------|
 HTML5 | UI structure |
 CSS3 | Chakra glow effects |
 JavaScript | Engine logic |
@@ -157,25 +174,25 @@ anime-ar-engine
 
 # 🚀 Running the Project Locally
 
-Clone the repository:
+Clone the repository
 
 ```
 git clone https://github.com/jeetrico/anime-ar-engine.git
 ```
 
-Open the project folder:
+Open the folder
 
 ```
 cd anime-ar-engine
 ```
 
-Run a local server:
+Run a local server
 
 ```
 python -m http.server
 ```
 
-Open browser:
+Open browser
 
 ```
 http://localhost:8000
@@ -191,7 +208,7 @@ For best tracking accuracy:
 ✔ clear background  
 ✔ hand fully visible  
 
-Mobile cameras usually provide **better tracking performance**.
+Mobile cameras provide **better tracking performance** than most webcams.
 
 ---
 
