@@ -1,45 +1,188 @@
-# 🌀 JEETRICO: Anime AR Engine v2.0 ⚡
-
-![GitHub license](https://img.shields.io/badge/License-MIT-blueviolet.svg)
-![Platform](https://img.shields.io/badge/Platform-Web_AR-orange.svg)
-![Tech](https://img.shields.io/badge/Engine-MediaPipe_Hands-blue.svg)
-
-> **"A shinobi's life is not measured by how they lived, but rather what they managed to accomplish before their death."** > This engine brings the power of the Hidden Leaf directly to your browser using advanced Computer Vision.
-
----
-
-## 📺 Live Jutsu Demo
-**[👉 CLICK HERE TO ACTIVATE YOUR CHAKRA](https://jeetrico.github.io/anime-ar-engine/)** *(Requires Camera Access. Works best on mobile devices like iPhone 17/Android High-End)*
-
----
-
-## 🔥 Jutsu Manifestation
-This isn't just a video overlay. It’s a **Real-Time Physics-Based Engine** that tracks 21 individual points on your hand to anchor the chakra perfectly to your palm.
-
-### 🌪️ Rasen Shuriken (Right Hand)
-* **Formation:** Starts from a swirling core at `0.0s`.
-* **Stability:** Once formed, the engine loops from `3.4s` to maintain a high-velocity aura.
-* **Chakra Growth:** The longer you hold your hand open, the larger the Rasengan grows, simulating a massive chakra build-up.
-
-### ⚡ Chidori / Raikiri (Left Hand)
-* **Static Discharge:** Instant activation with high-frequency purple lightning.
-* **Infinite Loop:** Seamlessly loops from `0.0s` to maintain the "1000 Birds" chirping effect.
-* **Palm Anchor:** Specifically coded to sit flat against the palm for realistic "thrusting" poses.
-
----
-
-## 🛠️ Secret Scrolls (Technical Specs)
-* **Logic Gatekeeper:** Uses `wasOpen` state tracking to prevent video "stutter" during hand movements.
-* **TimeUpdate Sync:** Unlike standard `ended` events, this uses a `0.1s` buffer check for zero-frame-drop looping.
-* **Raw Quality Path:** 1:1 Camera passthrough. No filters, no dullness—just pure iPhone sensor quality.
+🌀 JEETRICO: Anime AR Engine ⚡
+Real-Time Chakra Effects in Your Browser
 
 
 
-## 📂 Repository Structure
-```text
-├── index.html          # The Core Jutsu Logic
-├── assets/             # VFX Scrolls (MP4 Files)
+
+
+
+
+
+“A shinobi’s life is not measured by how they lived, but rather what they managed to accomplish.”
+
+JEETRICO Anime AR Engine is a browser-based augmented reality system that lets you summon iconic anime chakra techniques using only your camera and hand gestures.
+
+No apps.
+No downloads.
+Just open the page and activate your chakra.
+
+🎥 Live Demo
+
+👉 Activate the engine
+
+https://jeetrico.github.io/anime-ar-engine/
+
+⚠️ Camera access required
+
+Best experience on:
+
+• iPhone
+• Android flagship devices
+• Chrome / Safari
+
+✋ How It Works
+
+The engine uses MediaPipe Hands to track 21 hand landmarks in real time.
+
+Pipeline:
+
+1️⃣ Camera captures the video feed
+2️⃣ MediaPipe detects hand landmarks
+3️⃣ Engine checks gesture state
+4️⃣ VFX video attaches to palm anchor
+5️⃣ Chakra effect grows dynamically
+
+🔥 Jutsu System
+🌪️ Rasen Shuriken (Right Hand)
+
+When your right palm opens, the engine generates a rotating chakra sphere.
+
+Features:
+
+• Starts with swirling chakra core
+• Mid-animation loop for smooth aura
+• Dynamic chakra expansion
+• Anchored above the palm
+
+Energy growth logic:
+
+Open hand longer → Chakra size increases
+⚡ Chidori / Raikiri (Left Hand)
+
+Opening your left palm activates lightning chakra.
+
+Features:
+
+• Instant activation
+• High-frequency lightning effect
+• Infinite loop animation
+• Palm-center anchor for thrust poses
+
+Inspired by the legendary Raikiri technique.
+
+⚔️ Jutsu Clash Detection
+
+When both hands activate simultaneously, the engine detects a clash.
+
+HUD warning appears:
+
+⚠️ JUTSU CLASH DETECTED ⚠️
+
+Future versions will trigger:
+
+💥 Chakra explosion
+⚡ Lightning discharge
+🌪️ Energy shockwave
+
+🧠 Engine Architecture
+
+The system prevents animation glitches using state tracking logic.
+
+Example:
+
+if (!wasOpen[idx]) {
+    vidRasengan.currentTime = 0;
+    vidRasengan.play();
+}
+
+Key components:
+
+Component	Role
+MediaPipe Hands	Hand landmark detection
+Gesture Logic	Detect open/closed palm
+Video VFX	Chakra animations
+Canvas Renderer	Skeleton tracking overlay
+🛠️ Technology Stack
+Technology	Purpose
+HTML5	UI structure
+CSS3	Chakra glow effects
+JavaScript	Engine logic
+MediaPipe Hands	Real-time hand tracking
+Canvas API	Skeleton rendering
+MP4 VFX overlays	Anime chakra visuals
+📂 Project Structure
+anime-ar-engine
+│
+├── index.html
+│   └── Core AR engine
+│
+├── assets
 │   ├── jeet_left_aura.mp4
 │   └── jeet_right_aura.mp4
-├── LICENSE             # MIT Protection
-└── README.md           # This scroll
+│
+├── LICENSE
+└── README.md
+🚀 Running the Project Locally
+
+Clone the repository:
+
+git clone https://github.com/jeetrico/anime-ar-engine.git
+
+Navigate into the folder:
+
+cd anime-ar-engine
+
+Run a local server:
+
+python -m http.server
+
+Open browser:
+
+http://localhost:8000
+📱 Performance Notes
+
+For best tracking accuracy:
+
+✔ good lighting
+✔ plain background
+✔ hand visible in frame
+
+Mobile devices provide smoother tracking than most webcams.
+
+🔮 Future Upgrades
+
+Planned improvements:
+
+• 💥 Chakra explosion system
+• ⚡ Lightning particle engine
+• 🎮 Gesture-based jutsu selection
+• 🎥 AR recording feature
+• 🧠 AI gesture recognition
+• 🌀 Multiple anime abilities
+
+👨‍💻 Author
+
+Jeet Banerjee
+
+GitHub
+https://github.com/jeetrico
+
+📜 License
+
+MIT License
+
+You are free to:
+
+✔ use
+✔ modify
+✔ distribute
+
+⭐ Support the Project
+
+If you like the project:
+
+⭐ Star the repository
+🍴 Fork the project
+🚀 Build your own anime AR powers
+
+✨ Activate your chakra. Summon your jutsu.
